@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 // This is a Data Transfer Object (DTO) class. This is sent/received in REST requests/responses.
 namespace CWPartB.Models
@@ -6,24 +7,36 @@ namespace CWPartB.Models
     public class Product
     {
         /// <summary>
-        /// Product ID
+        /// Sample ID
         /// </summary>
         [Key]
-        public string ProductID { get; set; }
+        public string SampleID { get; set; }
 
         /// <summary>
-        /// Name of the product
+        /// Title of the Sample
         /// </summary>
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
-        /// Price of the product
+        /// Name of Artist
         /// </summary>
-        public double Price { get; set; }
+        public string Artist { get; set; }
 
         /// <summary>
-        /// Category of the product
+        /// Creation date/time of entity
         /// </summary>
-        public string Category { get; set; }
+        public DateTime CreatedDate { get; set; }
+
+        /// <summary>
+        /// Name of uploaded blob in blob storage
+        /// </summary>
+        public string Mp3Blob { get; set; }
+
+
+        /// <summary>
+        /// Name of sample blobb in blob storage 
+        /// </summary>
+        public string SampleMp3Blob { get; set; }
+
     }
 }

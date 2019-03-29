@@ -10,13 +10,13 @@ namespace CWPartB.Migrations
     {
         public static void go()
         {
-            const String partitionName = "Products_Partition_1";
+            const String partitionName = "Sample_Partition_1";
 
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ToString());
 
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
-            CloudTable table = tableClient.GetTableReference("Products");
+            CloudTable table = tableClient.GetTableReference("Samples");
 
             // If table doesn't already exist in storage then create and populate it with some initial values, otherwise do nothing
             if (!table.Exists())
@@ -28,34 +28,30 @@ namespace CWPartB.Migrations
                 TableBatchOperation batchOperation = new TableBatchOperation();
 
                 // Create a product entity and add it to the table.
-                ProductEntity product1 = new ProductEntity(partitionName, "1");
-                product1.Name = "Alien";
-                product1.Category = "Widget";
-                product1.Price = 22.31;
+                ProductEntity sample1 = new ProductEntity(partitionName, "1");
+                DateTime date1 = new DateTime(2008, 5, 1, 8, 30, 52);
+                sample1.Title = "Anthem";
+                sample1.Artist = "Drew";
+                sample1.CreatedDate = date1;
+                sample1.Mp3Blob = "Anthem.mp3";
+                sample1.SampleMp3Blob = "name.mp3";
+                // Create another product entity and add it to the table.
+                //   ProductEntity sample2 = new ProductEntity(partitionName, "2");
+
 
                 // Create another product entity and add it to the table.
-                ProductEntity product2 = new ProductEntity(partitionName, "2");
-                product2.Name = "Steel";
-                product2.Category = "Material";
-                product2.Price = 9.91;
+                //  ProductEntity sample3 = new ProductEntity(partitionName, "3");
+
 
                 // Create another product entity and add it to the table.
-                ProductEntity product3 = new ProductEntity(partitionName, "3");
-                product3.Name = "Thingy";
-                product3.Category = "Widget";
-                product3.Price = 4.99;
+                //   ProductEntity sample4 = new ProductEntity(partitionName, "4");
 
-                // Create another product entity and add it to the table.
-                ProductEntity product4 = new ProductEntity(partitionName, "4");
-                product4.Name = "Plastic";
-                product4.Category = "Material";
-                product4.Price = 4.99;
 
                 // Add product entities to the batch insert operation.
-                batchOperation.Insert(product1);
-                batchOperation.Insert(product2);
-                batchOperation.Insert(product3);
-                batchOperation.Insert(product4);
+                batchOperation.Insert(sample1);
+               // batchOperation.Insert(sample2);
+               // batchOperation.Insert(sample3);
+               // batchOperation.Insert(sample4);
 
                 // Execute the batch operation.
                 table.ExecuteBatch(batchOperation);

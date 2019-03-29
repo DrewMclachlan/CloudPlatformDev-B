@@ -14,7 +14,7 @@ namespace CWPartB.Controllers
 {
     public class ProductsController : ApiController
     {
-        private const String partitionName = "Products_Partition_1";
+        private const String partitionName = "Sample_Partition_1";
 
         private CloudStorageAccount storageAccount;
         private CloudTableClient tableClient;
@@ -24,7 +24,7 @@ namespace CWPartB.Controllers
         {
             storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ToString());
             tableClient = storageAccount.CreateCloudTableClient();
-            table = tableClient.GetTableReference("Products");
+            table = tableClient.GetTableReference("Samples");
         }
 
         /// <summary>
@@ -41,10 +41,12 @@ namespace CWPartB.Controllers
             IEnumerable<Product> productList = from e in entityList
                                                select new Product()
                                                {
-                                                   ProductID = e.RowKey,
-                                                   Name = e.Name,
-                                                   Price = e.Price,
-                                                   Category = e.Category
+                                                   SampleID = e.RowKey,
+                                                   Title = e.Title,
+                                                   Artist = e.Artist,
+                                                   CreatedDate = e.CreatedDate,
+                                                   Mp3Blob = e.Mp3Blob,
+                                                   SampleMp3Blob = e.SampleMp3Blob
                                                };
             return productList;
         }
@@ -71,10 +73,15 @@ namespace CWPartB.Controllers
                 ProductEntity productEntity = (ProductEntity)getOperationResult.Result;
                 Product p = new Product()
                 {
-                    ProductID = productEntity.RowKey,
-                    Name = productEntity.Name,
-                    Price = productEntity.Price,
-                    Category = productEntity.Category
+                    SampleID = productEntity.RowKey,
+                    Title = productEntity.Title,
+             
+                    Artist = productEntity.Artist,
+                    CreatedDate = productEntity.CreatedDate,
+                    Mp3Blob = productEntity.Mp3Blob,
+                    SampleMp3Blob = productEntity.SampleMp3Blob,
+                    
+           
                 };
                 return Ok(p);
             }
@@ -94,9 +101,11 @@ namespace CWPartB.Controllers
             {
                 RowKey = getNewMaxRowKeyValue(),
                 PartitionKey = partitionName,
-                Name = product.Name,
-                Price = product.Price,
-                Category = product.Category
+                Title = product.Title,
+                Artist = product.Artist,
+                CreatedDate = product.CreatedDate,
+                Mp3Blob = product.Mp3Blob,
+                SampleMp3Blob = product.SampleMp3Blob
             };
 
             // Create the TableOperation that inserts the product entity.
@@ -119,7 +128,7 @@ namespace CWPartB.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutProduct(string id, Product product)
         {
-            if (id != product.ProductID)
+            if (id != product.SampleID)
             {
                 return BadRequest();
             }
@@ -133,9 +142,12 @@ namespace CWPartB.Controllers
             // Assign the result to a ProductEntity object.
             ProductEntity updateEntity = (ProductEntity)retrievedResult.Result;
 
-            updateEntity.Name = product.Name;
-            updateEntity.Price = product.Price;
-            updateEntity.Category = product.Category;
+            updateEntity.Title = product.Title;
+          
+            updateEntity.Artist = product.Artist;
+            updateEntity.CreatedDate = product.CreatedDate;
+            updateEntity.Mp3Blob = product.Mp3Blob;
+            updateEntity.SampleMp3Blob = product.SampleMp3Blob;
 
             // Create the TableOperation that inserts the product entity.
             // Note semantics of InsertOrReplace() which are consistent with PUT
