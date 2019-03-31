@@ -46,7 +46,7 @@ namespace CWPartB.Controllers
                                                    Artist = e.Artist,
                                                    CreatedDate = e.CreatedDate,
                                                    Mp3Blob = e.Mp3Blob,
-                                                   SampleMp3Blob = e.SampleMp3Blob
+                                                  
                                                };
             return productList;
         }
@@ -75,13 +75,11 @@ namespace CWPartB.Controllers
                 {
                     SampleID = productEntity.RowKey,
                     Title = productEntity.Title,
-             
                     Artist = productEntity.Artist,
                     CreatedDate = productEntity.CreatedDate,
-                    Mp3Blob = productEntity.Mp3Blob,
-                    SampleMp3Blob = productEntity.SampleMp3Blob,
-                    
+                   // Mp3Blob = productEntity.Mp3Blob,
            
+
                 };
                 return Ok(p);
             }
@@ -97,15 +95,21 @@ namespace CWPartB.Controllers
         [ResponseType(typeof(Product))]
         public IHttpActionResult PostProduct(Product product)
         {
+           
+        
+            DateTime date = DateTime.Now;
             ProductEntity productEntity = new ProductEntity()
-            {
-                RowKey = getNewMaxRowKeyValue(),
+            {   
+            RowKey = getNewMaxRowKeyValue(),
                 PartitionKey = partitionName,
                 Title = product.Title,
                 Artist = product.Artist,
-                CreatedDate = product.CreatedDate,
+                CreatedDate = date,
                 Mp3Blob = product.Mp3Blob,
-                SampleMp3Blob = product.SampleMp3Blob
+                SampleMp3Blob = null,
+                SampleMp3URL = null,
+                SampleDate = null
+             
             };
 
             // Create the TableOperation that inserts the product entity.
@@ -143,11 +147,9 @@ namespace CWPartB.Controllers
             ProductEntity updateEntity = (ProductEntity)retrievedResult.Result;
 
             updateEntity.Title = product.Title;
-          
             updateEntity.Artist = product.Artist;
-            updateEntity.CreatedDate = product.CreatedDate;
             updateEntity.Mp3Blob = product.Mp3Blob;
-            updateEntity.SampleMp3Blob = product.SampleMp3Blob;
+          
 
             // Create the TableOperation that inserts the product entity.
             // Note semantics of InsertOrReplace() which are consistent with PUT

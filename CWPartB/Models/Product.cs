@@ -38,5 +38,15 @@ namespace CWPartB.Models
         /// </summary>
         public string SampleMp3Blob { get; set; }
 
+        /// <summary>
+        /// Web Service resource URL of mp3 sample 
+        /// </summary>
+        public string SampleMp3URL { get; set; }
+
+        /// <summary>
+        /// creation date/time of sample blob
+        /// </summary>
+        public DateTime? SampleDate { get; set; }
+
     }
 }

@@ -29,14 +29,28 @@ namespace CWPartB.Migrations
 
                 // Create a product entity and add it to the table.
                 ProductEntity sample1 = new ProductEntity(partitionName, "1");
-                DateTime date1 = new DateTime(2008, 5, 1, 8, 30, 52);
-                sample1.Title = "Anthem";
+                DateTime date1 = DateTime.Now;
+                sample1.Title = "Anthem1";
                 sample1.Artist = "Drew";
                 sample1.CreatedDate = date1;
-                sample1.Mp3Blob = "Anthem.mp3";
-                sample1.SampleMp3Blob = "name.mp3";
+                sample1.Mp3Blob = null;
+                sample1.SampleMp3Blob = null;
+                sample1.SampleMp3URL = null;
+                sample1.SampleDate = null;
                 // Create another product entity and add it to the table.
                 //   ProductEntity sample2 = new ProductEntity(partitionName, "2");
+
+                ProductEntity sample2 = new ProductEntity(partitionName, "2");
+                DateTime date2 = DateTime.Now;
+                sample2.Title = "Anthem2";
+                sample2.Artist = "Drew";
+                sample2.CreatedDate = date2;
+                sample2.Mp3Blob = null;
+                sample2.SampleMp3Blob = null;
+                sample2.SampleMp3URL = null;
+                sample2.SampleDate = null;
+
+
 
 
                 // Create another product entity and add it to the table.
@@ -49,7 +63,7 @@ namespace CWPartB.Migrations
 
                 // Add product entities to the batch insert operation.
                 batchOperation.Insert(sample1);
-               // batchOperation.Insert(sample2);
+                batchOperation.Insert(sample2);
                // batchOperation.Insert(sample3);
                // batchOperation.Insert(sample4);
 
