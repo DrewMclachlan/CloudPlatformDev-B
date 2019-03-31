@@ -3,11 +3,32 @@ using System.IO;
 using Microsoft.Azure.WebJobs;
 using Microsoft.WindowsAzure.Storage.Blob;
 using NAudio.Wave;
+using Microsoft.WindowsAzure.Storage.Table;
+using CWPartB.Models;
 
 namespace CWPartB_Webjob
 {
     public class Functions
     {
+       
+        public static void GenerateSample(
+        [QueueTrigger("audiosamplemaker")] Product sampleInQueue,
+       
+        [Table("Samples", "{PartitionKey}", "{RowKey}")] Product sampleInTable,
+        [Table("Samples")] CloudTable tableBinding, TextWriter logger)
+        {
+            if (sampleInTable == null)
+            {
+                logger.WriteLine("Person not found: PK:{0}, RK:{1}",
+                      sampleInTable.SampleID);
+            }
+            else
+            {
+                logger.WriteLine("Person found:, RK:{0}, Name:{1}",
+                        sampleInTable.SampleID, sampleInTable.Title);
+            }
+
+        }
 
         public static void Generate20sMP3(
         [QueueTrigger("mp3shortner")] String blobInfo,

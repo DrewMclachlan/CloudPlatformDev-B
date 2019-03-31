@@ -102,6 +102,12 @@
     <None Include="packages.config" />
     <None Include="Properties\webjob-publish-settings.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CWPartB\CWPartB.csproj">
+      <Project>{1e2da114-af0e-4592-9145-fc8c629bcd11}</Project>
+      <Name>CWPartB</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Web.WebJobs.Publish.1.0.12\tools\webjobs.targets" Condition="Exists('..\packages\Microsoft.Web.WebJobs.Publish.1.0.12\tools\webjobs.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
