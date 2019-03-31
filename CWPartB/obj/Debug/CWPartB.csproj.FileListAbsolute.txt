@@ -18,6 +18,7 @@ C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\Microsoft.WindowsAzure.Storage.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\Newtonsoft.Json.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Net.Http.Formatting.dll
+C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Spatial.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Web.Helpers.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Web.Http.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Web.Http.WebHost.dll
@@ -30,6 +31,7 @@ C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\Microsoft.Data.Edm.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\Microsoft.Data.Services.Client.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\Microsoft.Data.OData.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Spatial.xml
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Web.Razor.xml
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Web.Webpages.xml
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Web.Webpages.Deployment.xml
@@ -40,11 +42,6 @@ C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\Newtonsoft.Json.xml
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Net.Http.Formatting.xml
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Web.Http.xml
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Web.Http.WebHost.xml
-C:\Users\uni\Documents\GitHub\CP-B\CWPartB\obj\Debug\CWPartB.csprojResolveAssemblyReference.cache
-C:\Users\uni\Documents\GitHub\CP-B\CWPartB\obj\Debug\CWPartB.dll
-C:\Users\uni\Documents\GitHub\CP-B\CWPartB\obj\Debug\CWPartB.pdb
-C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Spatial.dll
-C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\System.Spatial.xml
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\de\System.Spatial.resources.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\es\System.Spatial.resources.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\fr\System.Spatial.resources.dll
@@ -54,3 +51,6 @@ C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\ko\System.Spatial.resources.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\ru\System.Spatial.resources.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\zh-Hans\System.Spatial.resources.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB\bin\zh-Hant\System.Spatial.resources.dll
+C:\Users\uni\Documents\GitHub\CP-B\CWPartB\obj\Debug\CWPartB.dll
+C:\Users\uni\Documents\GitHub\CP-B\CWPartB\obj\Debug\CWPartB.pdb
+C:\Users\uni\Documents\GitHub\CP-B\CWPartB\obj\Debug\CWPartB.csprojResolveAssemblyReference.cache

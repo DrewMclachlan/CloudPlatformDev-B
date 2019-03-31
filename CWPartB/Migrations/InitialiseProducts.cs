@@ -12,7 +12,7 @@ namespace CWPartB.Migrations
         {
             const String partitionName = "Sample_Partition_1";
 
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ToString());
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureStorage"].ToString());
 
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
