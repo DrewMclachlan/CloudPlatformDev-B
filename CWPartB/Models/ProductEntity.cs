@@ -5,7 +5,7 @@ namespace CWPartB.Models
 {
     public class ProductEntity : TableEntity
     {
-
+        
         public string Title { get; set; }
         public string Artist { get; set; }
         public DateTime CreatedDate { get; set; }

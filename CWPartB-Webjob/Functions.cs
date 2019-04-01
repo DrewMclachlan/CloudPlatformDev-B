@@ -5,49 +5,45 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using NAudio.Wave;
 using Microsoft.WindowsAzure.Storage.Table;
 using CWPartB.Models;
+using System.Linq;
 
 namespace CWPartB_Webjob
 {
     public class Functions
     {
-       
-        public static void GenerateSample(
-        [QueueTrigger("audiosamplemaker")] Product sampleInQueue,
-       
-        [Table("Samples", "{PartitionKey}", "{RowKey}")] Product sampleInTable,
-        [Table("Samples")] CloudTable tableBinding, TextWriter logger)
-        {
-            if (sampleInTable == null)
-            {
-                logger.WriteLine("Person not found: PK:{0}, RK:{1}",
-                      sampleInTable.SampleID);
-            }
-            else
-            {
-                logger.WriteLine("Person found:, RK:{0}, Name:{1}",
-                        sampleInTable.SampleID, sampleInTable.Title);
-            }
 
+        public static void ReadTable(
+         [QueueTrigger("mp3shortner")] String blobInfo,
+         [Table("Samples")] IQueryable<ProductEntity> tableBinding,
+         TextWriter logger)
+        {
+            logger.WriteLine(blobInfo);
+            var query = from p in tableBinding select p;
+            foreach (ProductEntity prod in query)
+            {
+                logger.WriteLine("PK:{0}, RK:{1}, Name:{2} BlobName:{3}",
+                    prod.PartitionKey, prod.RowKey, prod.Title, prod.Mp3Blob);
+            }
         }
 
-        public static void Generate20sMP3(
+      public static void Generate20sMP3(
         [QueueTrigger("mp3shortner")] String blobInfo,
         [Blob("mp3gallery/mp3/{queueTrigger}")] CloudBlockBlob inputBlob,
-        [Blob("mp3gallery/shortenedmp3/{queueTrigger}")] CloudBlockBlob outputBlob, TextWriter logger)
-        {
+       [Blob("mp3gallery/shortenedmp3/{queueTrigger}")] CloudBlockBlob outputBlob, TextWriter logger)
+     {
             logger.WriteLine("ShortenMP3() started...");
             logger.WriteLine("Input blob is: " + blobInfo);
 
             using (Stream input = inputBlob.OpenRead())
             using (Stream output = outputBlob.OpenWrite())
-            {
+           {
                 outputBlob.Properties.ContentType = "audio/mpeg";
-                CreateSample(input, output, 20);
-                outputBlob.Metadata["Title"] = blobInfo;
+               CreateSample(input, output, 20);
+               outputBlob.Metadata["Title"] = blobInfo;
             }
             outputBlob.SetMetadata();
             logger.WriteLine("Generate20sMP3() completed...");
-        }
+       }
 
 
         private static void CreateSample(Stream input, Stream output, int duration)

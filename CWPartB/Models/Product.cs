@@ -7,6 +7,11 @@ namespace CWPartB.Models
     public class Product
     {
         /// <summary>
+        /// Sample Pa
+        /// </summary>
+        public string PartitionKey { get; set; }
+
+        /// <summary>
         /// Sample ID
         /// </summary>
         [Key]

@@ -22,7 +22,7 @@ namespace CWPartB.Controllers
 
         public ProductsController()
         {
-            storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ToString());
+            storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureStorage"].ToString());
             tableClient = storageAccount.CreateCloudTableClient();
             table = tableClient.GetTableReference("Samples");
         }
@@ -77,7 +77,7 @@ namespace CWPartB.Controllers
                     Title = productEntity.Title,
                     Artist = productEntity.Artist,
                     CreatedDate = productEntity.CreatedDate,
-                   // Mp3Blob = productEntity.Mp3Blob,
+                    Mp3Blob = productEntity.Mp3Blob,
            
 
                 };
@@ -106,9 +106,9 @@ namespace CWPartB.Controllers
                 Artist = product.Artist,
                 CreatedDate = date,
                 Mp3Blob = product.Mp3Blob,
-                SampleMp3Blob = null,
-                SampleMp3URL = null,
-                SampleDate = null
+              //  SampleMp3Blob = null,
+              //  SampleMp3URL = null,
+              //  SampleDate = null
              
             };
 
