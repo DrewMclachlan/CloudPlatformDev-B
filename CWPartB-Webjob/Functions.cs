@@ -11,6 +11,8 @@ namespace CWPartB_Webjob
 {
     public class Functions
     {
+
+        //if goes wrong remove blob bits in method below
         public static void ReadTable(
         [QueueTrigger("mp3shortner")] ProductEntity blobInfo,
         [Blob("mp3gallery/mp3/{queueTrigger}")] CloudBlockBlob inputBlob,
