@@ -12,6 +12,10 @@
         <div>
             Upload Sound:
             <asp:FileUpload ID="upload" runat="server" />
+            <br />
+            RowKey:
+           <asp:TextBox ID="rk" runat="server" />
+           
             <asp:Button ID="submitButton" runat="server" Text="Submit" OnClick="submitButton_Click" />
         </div>
         <div>
