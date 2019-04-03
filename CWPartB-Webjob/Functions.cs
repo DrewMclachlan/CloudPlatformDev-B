@@ -18,25 +18,39 @@ namespace CWPartB_Webjob
         [Blob("mp3gallery/mp3/{Mp3Blob}")] CloudBlockBlob inputBlob,
         [Blob("mp3gallery/shortenedmp3/{Mp3Blob}")] CloudBlockBlob outputBlob,
         [Table("Samples", "{PartitionKey}", "{RowKey}")] ProductEntity prod,
+        [Table("Samples")] CloudTable tableBinding,
         TextWriter logger)
         {
             using (Stream input = inputBlob.OpenRead())
             using (Stream output = outputBlob.OpenWrite())
             {
-                        String copy = null;
-                        outputBlob.Properties.ContentType = "audio/mpeg";
-                       CreateSample(input, output, 20);
-                        copy = inputBlob.Metadata["Title"];
-                        outputBlob.Metadata["Title"] = copy;
-                    }
-              logger.WriteLine("Generate20sMP3() completed...");
-
-            logger.WriteLine("found: PK:{0}, RK:{1}",
-                          blobInfo.PartitionKey, blobInfo.RowKey);
-            {
-                logger.WriteLine("PK:{0}, RK:{1}, Name:{2} BlobName:{3}",
-              prod.PartitionKey, prod.RowKey, prod.Title, prod.Mp3Blob);
+                String copy = null;
+                outputBlob.Properties.ContentType = "audio/mpeg";
+                CreateSample(input, output, 20);
+                copy = inputBlob.Metadata["Title"];
+                outputBlob.Metadata["Title"] = copy;
             }
+            logger.WriteLine("Generate20sMP3() completed...");
+            logger.WriteLine("Found: PK:{0}, RK:{1}", blobInfo.PartitionKey, blobInfo.RowKey);
+            logger.WriteLine("PK:{0}, RK:{1}, Name:{2} BlobName:{3}", prod.PartitionKey, prod.RowKey, prod.Title, prod.Mp3Blob);
+            DateTime date1 = DateTime.Now;
+            var person = new ProductEntity()
+            {
+                PartitionKey = "Sample_Partition_1",
+                RowKey = blobInfo.RowKey,
+                Title = "work",
+                Artist = "plz",
+                Mp3Blob = "Name",
+                CreatedDate = date1,
+                SampleMp3Blob = null,
+                SampleMp3URL = null,
+                SampleDate = null
+            };
+            person.ETag = "*";
+            TableOperation o = TableOperation.Merge(person);
+                tableBinding.Execute(o);
+            
+
         }
 
         //public static void Generate20sMP3(

@@ -30,7 +30,7 @@ namespace CWPartB.Models
         /// <summary>
         /// Creation date/time of entity
         /// </summary>
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
         /// <summary>
         /// Name of uploaded blob in blob storage
