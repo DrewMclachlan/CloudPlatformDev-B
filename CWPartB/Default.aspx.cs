@@ -3,6 +3,8 @@ using Microsoft.WindowsAzure.Storage.Queue;
 using System;
 using System.IO;
 using System.Linq;
+using CWPartB.Models;
+using Newtonsoft.Json;
 
 namespace CWPartB
 {
@@ -60,20 +62,29 @@ namespace CWPartB
             {
                 // Get the file name specified by the user without the .mp3 extension. 
                 var filename = Path.GetFileNameWithoutExtension(upload.FileName);
-                var name = string.Format("{0}", filename);
+                var name = string.Format(string.Format("{0}", Guid.NewGuid()));
                 String path = "mp3/" + name;
 
                 var blob = getMP3galleryContainer().GetBlockBlobReference(path);
-
+               
                 blob.Properties.ContentType = GetMimeType(upload.FileName);
+                blob.Metadata["Title"] = filename;
+
+
+         
 
                 // Actually upload the data to the
                 // newly instantiated blob
                 blob.UploadFromStream(upload.FileContent);
+                blob.SetMetadata();
+
+                ProductEntity blobInfo = new ProductEntity() { PartitionKey="Sample_Partition_1", RowKey = "1", Title = filename};
+                var queueMessage = new CloudQueueMessage(JsonConvert.SerializeObject(blobInfo));
+                getMP3shortnerQueue().AddMessage(queueMessage);
 
                 // Place a message in the queue to tell the worker
                 // role that a new mp3 blob exists
-                getMP3shortnerQueue().AddMessage(new CloudQueueMessage(System.Text.Encoding.UTF8.GetBytes(name)));
+                //   getMP3shortnerQueue().AddMessage(new CloudQueueMessage(System.Text.Encoding.UTF8.GetBytes(name)));
 
                 System.Diagnostics.Trace.WriteLine(String.Format("*** WebRole: Enqueued '{0}'", path));
             }
@@ -84,6 +95,7 @@ namespace CWPartB
             CloudBlockBlob blob = new CloudBlockBlob(blobURI);
             blob.FetchAttributes();
             return blob.Metadata["Title"];
+
         }
 
 
