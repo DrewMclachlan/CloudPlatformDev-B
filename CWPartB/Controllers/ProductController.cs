@@ -1,7 +1,8 @@
 ﻿using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 using Microsoft.WindowsAzure.Storage.Table;
 using CWPartB.Models;
-//using Swashbuckle.Swagger.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,7 +16,7 @@ namespace CWPartB.Controllers
     public class ProductsController : ApiController
     {
         private const String partitionName = "Sample_Partition_1";
-
+        private BlobStorageService _blobStorageService = new BlobStorageService();
         private CloudStorageAccount storageAccount;
         private CloudTableClient tableClient;
         private CloudTable table;
@@ -25,6 +26,13 @@ namespace CWPartB.Controllers
             storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureStorage"].ToString());
             tableClient = storageAccount.CreateCloudTableClient();
             table = tableClient.GetTableReference("Samples");
+        }
+
+
+        private CloudBlobContainer getMP3galleryContainer()
+        {
+
+            return _blobStorageService.getCloudBlobContainer();
         }
 
         /// <summary>
@@ -46,7 +54,9 @@ namespace CWPartB.Controllers
                                                    Artist = e.Artist,
                                                    CreatedDate = e.CreatedDate,
                                                    Mp3Blob = e.Mp3Blob,
-                                                  
+                                                   SampleMp3Blob = e.SampleMp3Blob,
+                                                   SampleMp3URL = e.SampleMp3URL,
+                                                   SampleDate = e.SampleDate                                          
                                                };
             return productList;
         }
@@ -78,9 +88,12 @@ namespace CWPartB.Controllers
                     Artist = productEntity.Artist,
                     CreatedDate = productEntity.CreatedDate,
                     Mp3Blob = productEntity.Mp3Blob,
-           
+                    SampleMp3Blob = productEntity.SampleMp3Blob,
+                    SampleMp3URL = productEntity.SampleMp3URL,
+                    SampleDate = productEntity.SampleDate
 
                 };
+         
                 return Ok(p);
             }
         }
@@ -91,7 +104,6 @@ namespace CWPartB.Controllers
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        //[SwaggerResponse(HttpStatusCode.Created)]
         [ResponseType(typeof(Product))]
         public IHttpActionResult PostProduct(Product product)
         {
@@ -106,9 +118,9 @@ namespace CWPartB.Controllers
                 Artist = product.Artist,
                 CreatedDate = date,
                 Mp3Blob = product.Mp3Blob,
-              //  SampleMp3Blob = null,
-              //  SampleMp3URL = null,
-              //  SampleDate = null
+                SampleMp3Blob = null,
+               SampleMp3URL = null,
+                SampleDate = null
              
             };
 
@@ -145,11 +157,23 @@ namespace CWPartB.Controllers
 
             // Assign the result to a ProductEntity object.
             ProductEntity updateEntity = (ProductEntity)retrievedResult.Result;
+   
+           
+
+           // if(String.IsNullOrEmpty(updateEntity.SampleMp3Blob))
+            var path = "shortenedmp3/" + updateEntity.SampleMp3Blob;
+            System.Diagnostics.Debug.WriteLine(path);
+            var blob = getMP3galleryContainer().GetBlockBlobReference(path);
+            blob.DeleteIfExists();
+
 
             updateEntity.Title = product.Title;
             updateEntity.Artist = product.Artist;
             updateEntity.Mp3Blob = product.Mp3Blob;
-          
+            updateEntity.SampleMp3Blob = null;
+            updateEntity.SampleMp3URL = null;
+            updateEntity.SampleDate = null;
+
 
             // Create the TableOperation that inserts the product entity.
             // Note semantics of InsertOrReplace() which are consistent with PUT
@@ -158,6 +182,7 @@ namespace CWPartB.Controllers
 
             // Execute the insert operation.
             table.Execute(updateOperation);
+            
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -176,6 +201,12 @@ namespace CWPartB.Controllers
 
             // Execute the retrieve operation.
             TableResult retrievedResult = table.Execute(retrieveOperation);
+            ProductEntity updateEntity = (ProductEntity)retrievedResult.Result;
+            var path = "shortenedmp3/" + updateEntity.SampleMp3Blob;
+            System.Diagnostics.Debug.WriteLine(path);
+            var blob = getMP3galleryContainer().GetBlockBlobReference(path);
+            blob.DeleteIfExists();
+
             if (retrievedResult.Result == null) return NotFound();
             else
             {

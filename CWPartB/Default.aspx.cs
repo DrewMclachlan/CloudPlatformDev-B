@@ -15,8 +15,7 @@ namespace CWPartB
         private CloudQueueService _queueStorageService = new CloudQueueService();
 
         private CloudBlobContainer getMP3galleryContainer()
-        {
-            System.Diagnostics.Debug.WriteLine("called");
+        {  
 
             return _blobStorageService.getCloudBlobContainer();
         }
@@ -31,7 +30,7 @@ namespace CWPartB
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine("called2");
+               
 
                 string ext = Path.GetExtension(Filename).ToLowerInvariant();
                 Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(ext);
@@ -68,9 +67,10 @@ namespace CWPartB
                 var filename = Path.GetFileNameWithoutExtension(upload.FileName);
                 var name = string.Format(string.Format("{0}", Guid.NewGuid()));
                 String path = "mp3/" + name;
-
+                System.Diagnostics.Debug.WriteLine("hi");
+                System.Diagnostics.Debug.WriteLine(path);
                 var blob = getMP3galleryContainer().GetBlockBlobReference(path);
-               
+                
                 blob.Properties.ContentType = GetMimeType(upload.FileName);
                 blob.Metadata["Title"] = filename;
 
