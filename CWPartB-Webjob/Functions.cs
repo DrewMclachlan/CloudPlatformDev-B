@@ -15,11 +15,22 @@ namespace CWPartB_Webjob
         //if goes wrong remove blob bits in method below
         public static void ReadTable(
         [QueueTrigger("mp3shortner")] ProductEntity blobInfo,
-        [Blob("mp3gallery/mp3/{queueTrigger}")] CloudBlockBlob inputBlob,
-        [Blob("mp3gallery/shortenedmp3/{queueTrigger}")] CloudBlockBlob outputBlob,
+        [Blob("mp3gallery/mp3/{Mp3Blob}")] CloudBlockBlob inputBlob,
+        [Blob("mp3gallery/shortenedmp3/{Mp3Blob}")] CloudBlockBlob outputBlob,
         [Table("Samples", "{PartitionKey}", "{RowKey}")] ProductEntity prod,
         TextWriter logger)
         {
+            using (Stream input = inputBlob.OpenRead())
+            using (Stream output = outputBlob.OpenWrite())
+            {
+                        String copy = null;
+                        outputBlob.Properties.ContentType = "audio/mpeg";
+                       CreateSample(input, output, 20);
+                        copy = inputBlob.Metadata["Title"];
+                        outputBlob.Metadata["Title"] = copy;
+                    }
+              logger.WriteLine("Generate20sMP3() completed...");
+
             logger.WriteLine("found: PK:{0}, RK:{1}",
                           blobInfo.PartitionKey, blobInfo.RowKey);
             {

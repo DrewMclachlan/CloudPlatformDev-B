@@ -78,7 +78,7 @@ namespace CWPartB
                 blob.UploadFromStream(upload.FileContent);
                 blob.SetMetadata();
 
-                ProductEntity blobInfo = new ProductEntity() { PartitionKey="Sample_Partition_1", RowKey = "1", Title = filename};
+                ProductEntity blobInfo = new ProductEntity() { PartitionKey="Sample_Partition_1", RowKey = "1", Mp3Blob = name };
                 var queueMessage = new CloudQueueMessage(JsonConvert.SerializeObject(blobInfo));
                 getMP3shortnerQueue().AddMessage(queueMessage);
 
@@ -86,7 +86,7 @@ namespace CWPartB
                 // role that a new mp3 blob exists
                 //   getMP3shortnerQueue().AddMessage(new CloudQueueMessage(System.Text.Encoding.UTF8.GetBytes(name)));
 
-                System.Diagnostics.Trace.WriteLine(String.Format("*** WebRole: Enqueued '{0}'", path));
+               System.Diagnostics.Trace.WriteLine(String.Format("*** WebRole: Enqueued '{0}'", path));
             }
         }
 
