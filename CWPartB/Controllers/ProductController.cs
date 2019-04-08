@@ -83,6 +83,7 @@ namespace CWPartB.Controllers
                 ProductEntity productEntity = (ProductEntity)getOperationResult.Result;
                 Product p = new Product()
                 {
+                    PartitionKey = productEntity.PartitionKey,
                     SampleID = productEntity.RowKey,
                     Title = productEntity.Title,
                     Artist = productEntity.Artist,
