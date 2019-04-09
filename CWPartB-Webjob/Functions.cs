@@ -41,13 +41,15 @@ namespace CWPartB_Webjob
                 logger.WriteLine("Generate20sMP3() completed...");
                 logger.WriteLine("Found: PK:{0}, RK:{1}", blobInfo.PartitionKey, blobInfo.RowKey);
                 logger.WriteLine("PK:{0}, RK:{1}, Name:{2} BlobName:{3}", prod.PartitionKey, prod.RowKey, prod.Title, prod.Mp3Blob);
+                logger.WriteLine("1:{0}, 2:{1}", inputBlob.Name, outputBlob.Name);
+              
                 var person = new SampleEntity()
                 {
-                    PartitionKey = "Sample_Partition_1",
+                    PartitionKey = blobInfo.PartitionKey,
                     RowKey = blobInfo.RowKey,
-                    Mp3Blob = blobInfo.Mp3Blob,
-                    SampleMp3Blob = blobInfo.Mp3Blob,
-                    SampleMp3URL = "http://127.0.0.1:10000/devstoreaccount1/mp3gallery/shortenedmp3/" + blobInfo.Mp3Blob,
+                    Mp3Blob = inputBlob.Name,
+                    SampleMp3Blob = outputBlob.Name,
+                    SampleMp3URL = outputBlob.Uri.ToString(),
                     SampleDate = date1
                 };
                 person.ETag = "*";

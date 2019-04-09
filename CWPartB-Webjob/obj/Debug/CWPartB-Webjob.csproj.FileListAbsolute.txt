@@ -1,3 +1,4 @@
+C:\Users\uni\Documents\GitHub\CP-B\CWPartB-Webjob\obj\Debug\CWPartB-Webjob.csprojResolveAssemblyReference.cache
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB-Webjob\bin\Debug\roslyn\csc.exe
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB-Webjob\bin\Debug\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB-Webjob\bin\Debug\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -93,6 +94,5 @@ C:\Users\uni\Documents\GitHub\CP-B\CWPartB-Webjob\bin\Debug\ko\System.Spatial.re
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB-Webjob\bin\Debug\ru\System.Spatial.resources.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB-Webjob\bin\Debug\zh-Hans\System.Spatial.resources.dll
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB-Webjob\bin\Debug\zh-Hant\System.Spatial.resources.dll
-C:\Users\uni\Documents\GitHub\CP-B\CWPartB-Webjob\obj\Debug\CWPartB-Webjob.csprojResolveAssemblyReference.cache
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB-Webjob\obj\Debug\CWPartB-Webjob.exe
 C:\Users\uni\Documents\GitHub\CP-B\CWPartB-Webjob\obj\Debug\CWPartB-Webjob.pdb

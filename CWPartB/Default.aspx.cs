@@ -57,10 +57,13 @@ namespace CWPartB
         // User clicked the "Submit" button
         protected void submitButton_Click(object sender, EventArgs e)
         {
-            
 
-            if (upload.HasFile)
+            String s = this.rk.Text;
+            int n;
+            bool isNumber = int.TryParse(s, out n);
+            if (upload.HasFile && s != null && isNumber == true)
             {
+                
                 // Get the file name specified by the user without the .mp3 extension. 
                 var filename = Path.GetFileNameWithoutExtension(upload.FileName);
                 var name = string.Format(string.Format("{0}", Guid.NewGuid()));
@@ -79,12 +82,7 @@ namespace CWPartB
                 // newly instantiated blob
                 blob.UploadFromStream(upload.FileContent);
                 blob.SetMetadata();
-                String s = this.rk.Text;
-             //   if (String.IsNullOrEmpty(s))
-             //   {
-                    
-                    //change this
-           //     } else {
+
                     System.Diagnostics.Debug.WriteLine(":)");
                     SampleEntity blobInfo = new SampleEntity() { PartitionKey = "Sample_Partition_1", RowKey = s, Mp3Blob = name };
                     var queueMessage = new CloudQueueMessage(JsonConvert.SerializeObject(blobInfo));
