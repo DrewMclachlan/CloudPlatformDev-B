@@ -3,7 +3,7 @@ using System;
 
 namespace CWPartB.Models
 {
-    public class ProductEntity : TableEntity
+    public class SampleEntity : TableEntity
     {
         
         public string Title { get; set; }
@@ -14,13 +14,13 @@ namespace CWPartB.Models
         public string SampleMp3URL { get; set; }
         public DateTime? SampleDate { get; set; }
 
-        public ProductEntity(string partitionKey, string SampleID)
+        public SampleEntity(string partitionKey, string SampleID)
         {
             PartitionKey = partitionKey;
             RowKey = SampleID;
         }
 
-        public ProductEntity() { }
+        public SampleEntity() { }
 
     }
 }

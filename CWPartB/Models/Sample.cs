@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 // This is a Data Transfer Object (DTO) class. This is sent/received in REST requests/responses.
 namespace CWPartB.Models
 {
-    public class Product
+    public class Sample
     {
         /// <summary>
         /// Sample Pa

@@ -61,8 +61,6 @@ namespace CWPartB
 
             if (upload.HasFile)
             {
-
-               
                 // Get the file name specified by the user without the .mp3 extension. 
                 var filename = Path.GetFileNameWithoutExtension(upload.FileName);
                 var name = string.Format(string.Format("{0}", Guid.NewGuid()));
@@ -82,14 +80,13 @@ namespace CWPartB
                 blob.UploadFromStream(upload.FileContent);
                 blob.SetMetadata();
                 String s = this.rk.Text;
-                if (String.IsNullOrEmpty(s))
-                {
-                    System.Diagnostics.Debug.WriteLine(":(");
-                    s = "1";
+             //   if (String.IsNullOrEmpty(s))
+             //   {
+                    
                     //change this
-                } else {
+           //     } else {
                     System.Diagnostics.Debug.WriteLine(":)");
-                    ProductEntity blobInfo = new ProductEntity() { PartitionKey = "Sample_Partition_1", RowKey = s, Mp3Blob = name };
+                    SampleEntity blobInfo = new SampleEntity() { PartitionKey = "Sample_Partition_1", RowKey = s, Mp3Blob = name };
                     var queueMessage = new CloudQueueMessage(JsonConvert.SerializeObject(blobInfo));
                     getMP3shortnerQueue().AddMessage(queueMessage);
 
@@ -98,7 +95,7 @@ namespace CWPartB
                     //   getMP3shortnerQueue().AddMessage(new CloudQueueMessage(System.Text.Encoding.UTF8.GetBytes(name)));
 
                     System.Diagnostics.Trace.WriteLine(String.Format("*** WebRole: Enqueued '{0}'", path));
-                }
+               // }
                 }
         }
 

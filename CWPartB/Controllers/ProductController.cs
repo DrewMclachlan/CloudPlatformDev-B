@@ -40,15 +40,17 @@ namespace CWPartB.Controllers
         /// </summary>
         /// <returns></returns>
         // GET: api/Products
-        public IEnumerable<Product> Get()
+        public IEnumerable<Sample> Get()
         {
-            TableQuery<ProductEntity> query = new TableQuery<ProductEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionName));
-            List<ProductEntity> entityList = new List<ProductEntity>(table.ExecuteQuery(query));
+           
+            TableQuery<SampleEntity> query = new TableQuery<SampleEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionName));
+            List<SampleEntity> entityList = new List<SampleEntity>(table.ExecuteQuery(query));
 
             // Basically create a list of Product from the list of ProductEntity with a 1:1 object relationship, filtering data as needed
-            IEnumerable<Product> productList = from e in entityList
-                                               select new Product()
+            IEnumerable<Sample> productList = from e in entityList
+                                               select new Sample()
                                                {
+                                                   PartitionKey = e.PartitionKey,
                                                    SampleID = e.RowKey,
                                                    Title = e.Title,
                                                    Artist = e.Artist,
@@ -67,11 +69,11 @@ namespace CWPartB.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ResponseType(typeof(Product))]
+        [ResponseType(typeof(Sample))]
         public IHttpActionResult GetProduct(string id)
         {
             // Create a retrieve operation that takes a product entity.
-            TableOperation getOperation = TableOperation.Retrieve<ProductEntity>(partitionName, id);
+            TableOperation getOperation = TableOperation.Retrieve<SampleEntity>(partitionName, id);
 
             // Execute the retrieve operation.
             TableResult getOperationResult = table.Execute(getOperation);
@@ -80,8 +82,8 @@ namespace CWPartB.Controllers
             if (getOperationResult.Result == null) return NotFound();
             else
             {
-                ProductEntity productEntity = (ProductEntity)getOperationResult.Result;
-                Product p = new Product()
+                SampleEntity productEntity = (SampleEntity)getOperationResult.Result;
+                Sample p = new Sample()
                 {
                     PartitionKey = productEntity.PartitionKey,
                     SampleID = productEntity.RowKey,
@@ -105,13 +107,13 @@ namespace CWPartB.Controllers
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        [ResponseType(typeof(Product))]
-        public IHttpActionResult PostProduct(Product product)
+        [ResponseType(typeof(Sample))]
+        public IHttpActionResult PostProduct(Sample product)
         {
            
         
             DateTime date = DateTime.Now;
-            ProductEntity productEntity = new ProductEntity()
+            SampleEntity productEntity = new SampleEntity()
             {   
             RowKey = getNewMaxRowKeyValue(),
                 PartitionKey = partitionName,
@@ -143,7 +145,7 @@ namespace CWPartB.Controllers
         /// <returns></returns>
         //[SwaggerResponse(HttpStatusCode.NoContent)]
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutProduct(string id, Product product)
+        public IHttpActionResult PutProduct(string id, Sample product)
         {
             if (id != product.SampleID)
             {
@@ -151,26 +153,26 @@ namespace CWPartB.Controllers
             }
 
             // Create a retrieve operation that takes a product entity.
-            TableOperation retrieveOperation = TableOperation.Retrieve<ProductEntity>(partitionName, id);
+            TableOperation retrieveOperation = TableOperation.Retrieve<SampleEntity>(partitionName, id);
 
             // Execute the operation.
             TableResult retrievedResult = table.Execute(retrieveOperation);
 
             // Assign the result to a ProductEntity object.
-            ProductEntity updateEntity = (ProductEntity)retrievedResult.Result;
-   
-           
+            SampleEntity updateEntity = (SampleEntity)retrievedResult.Result;
+            
 
-           // if(String.IsNullOrEmpty(updateEntity.SampleMp3Blob))
+           //  if(String.IsNullOrEmpty(updateEntity.SampleMp3Blob))
             var path = "shortenedmp3/" + updateEntity.SampleMp3Blob;
             System.Diagnostics.Debug.WriteLine(path);
-            var blob = getMP3galleryContainer().GetBlockBlobReference(path);
+           var blob = getMP3galleryContainer().GetBlockBlobReference(path);
             blob.DeleteIfExists();
+        
 
 
             updateEntity.Title = product.Title;
             updateEntity.Artist = product.Artist;
-            updateEntity.Mp3Blob = product.Mp3Blob;
+            updateEntity.Mp3Blob = null;
             updateEntity.SampleMp3Blob = null;
             updateEntity.SampleMp3URL = null;
             updateEntity.SampleDate = null;
@@ -183,7 +185,7 @@ namespace CWPartB.Controllers
 
             // Execute the insert operation.
             table.Execute(updateOperation);
-            
+  
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -194,15 +196,15 @@ namespace CWPartB.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ResponseType(typeof(Product))]
+        [ResponseType(typeof(Sample))]
         public IHttpActionResult DeleteProduct(string id)
         {
             // Create a retrieve operation that takes a product entity.
-            TableOperation retrieveOperation = TableOperation.Retrieve<ProductEntity>(partitionName, id);
+            TableOperation retrieveOperation = TableOperation.Retrieve<SampleEntity>(partitionName, id);
 
             // Execute the retrieve operation.
             TableResult retrievedResult = table.Execute(retrieveOperation);
-            ProductEntity updateEntity = (ProductEntity)retrievedResult.Result;
+            SampleEntity updateEntity = (SampleEntity)retrievedResult.Result;
             var path = "shortenedmp3/" + updateEntity.SampleMp3Blob;
             System.Diagnostics.Debug.WriteLine(path);
             var blob = getMP3galleryContainer().GetBlockBlobReference(path);
@@ -211,7 +213,7 @@ namespace CWPartB.Controllers
             if (retrievedResult.Result == null) return NotFound();
             else
             {
-                ProductEntity deleteEntity = (ProductEntity)retrievedResult.Result;
+                SampleEntity deleteEntity = (SampleEntity)retrievedResult.Result;
                 TableOperation deleteOperation = TableOperation.Delete(deleteEntity);
 
                 // Execute the operation.
@@ -223,10 +225,10 @@ namespace CWPartB.Controllers
 
         private String getNewMaxRowKeyValue()
         {
-            TableQuery<ProductEntity> query = new TableQuery<ProductEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionName));
+            TableQuery<SampleEntity> query = new TableQuery<SampleEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionName));
 
             int maxRowKeyValue = 0;
-            foreach (ProductEntity entity in table.ExecuteQuery(query))
+            foreach (SampleEntity entity in table.ExecuteQuery(query))
             {
                 int entityRowKeyValue = Int32.Parse(entity.RowKey);
                 if (entityRowKeyValue > maxRowKeyValue) maxRowKeyValue = entityRowKeyValue;

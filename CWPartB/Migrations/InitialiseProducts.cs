@@ -28,7 +28,7 @@ namespace CWPartB.Migrations
                 TableBatchOperation batchOperation = new TableBatchOperation();
 
                 // Create a product entity and add it to the table.
-                ProductEntity sample1 = new ProductEntity(partitionName, "1");
+                SampleEntity sample1 = new SampleEntity(partitionName, "1");
                 DateTime date1 = DateTime.Now;
                 sample1.Title = "USA's National Anthem";
                 sample1.Artist = "USA";
@@ -39,7 +39,7 @@ namespace CWPartB.Migrations
                 sample1.SampleDate = null;
               
 
-                ProductEntity sample2 = new ProductEntity(partitionName, "2");
+                SampleEntity sample2 = new SampleEntity(partitionName, "2");
                 DateTime date2 = DateTime.Now;
                 sample2.Title = "Russian National Anthem";
                 sample2.Artist = "Russia";
@@ -49,7 +49,7 @@ namespace CWPartB.Migrations
                 sample2.SampleMp3URL = null;
                 sample2.SampleDate = null;
 
-                ProductEntity sample3 = new ProductEntity(partitionName, "3");
+                SampleEntity sample3 = new SampleEntity(partitionName, "3");
                 sample3.Title = "French National Anthem";
                 sample3.Artist = "France";
                 sample3.CreatedDate = date1;
@@ -58,7 +58,7 @@ namespace CWPartB.Migrations
                 sample3.SampleMp3URL = null;
                 sample3.SampleDate = null;
 
-                ProductEntity sample4 = new ProductEntity(partitionName, "4");
+                SampleEntity sample4 = new SampleEntity(partitionName, "4");
                 sample4.Title = "Heartbreaker";
                 sample4.Artist = "Crazy P";
                 sample4.CreatedDate = date2;
@@ -67,7 +67,7 @@ namespace CWPartB.Migrations
                 sample4.SampleMp3URL = null;
                 sample4.SampleDate = null;
 
-                ProductEntity sample5 = new ProductEntity(partitionName, "5");
+                SampleEntity sample5 = new SampleEntity(partitionName, "5");
                 sample5.Title = "Rebirth of Cool";
                 sample5.Artist = "DJ Cam Quartet";
                 sample5.CreatedDate = date2;
@@ -76,7 +76,7 @@ namespace CWPartB.Migrations
                 sample5.SampleMp3URL = null;
                 sample5.SampleDate = null;
 
-                ProductEntity sample6 = new ProductEntity(partitionName, "");
+                SampleEntity sample6 = new SampleEntity(partitionName, "6");
                 sample6.Title = "The Big Unkown";
                 sample6.Artist = "Elder Island";
                 sample6.CreatedDate = date2;
