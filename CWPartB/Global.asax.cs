@@ -19,7 +19,7 @@ namespace CWPartB
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            InitialiseProducts.go();
+            InitialiseSamples.go();
 
         }
     }

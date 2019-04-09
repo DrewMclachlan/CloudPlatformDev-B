@@ -13,13 +13,18 @@ using System.Web.Http.Description;
 
 namespace CWPartB.Controllers
 {
+    //Drew Mclachlan 
+    //S1511481  
     public class ProductsController : ApiController
-    {
+    {   
+        
         private const String partitionName = "Sample_Partition_1";
         private BlobStorageService _blobStorageService = new BlobStorageService();
         private CloudStorageAccount storageAccount;
         private CloudTableClient tableClient;
         private CloudTable table;
+
+
 
         public ProductsController()
         {

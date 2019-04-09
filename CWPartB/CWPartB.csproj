@@ -147,7 +147,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BlobStorageService.cs" />
     <Compile Include="CloudQueueService.cs" />
-    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\SampleController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -158,7 +158,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\InitialiseProducts.cs" />
+    <Compile Include="Migrations\InitialiseSamples.cs" />
     <Compile Include="Models\Sample.cs" />
     <Compile Include="Models\SampleEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

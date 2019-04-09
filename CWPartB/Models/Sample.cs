@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+//Drew Mclachlan
+//S1511481
 
 // This is a Data Transfer Object (DTO) class. This is sent/received in REST requests/responses.
 namespace CWPartB.Models
@@ -7,7 +9,7 @@ namespace CWPartB.Models
     public class Sample
     {
         /// <summary>
-        /// Sample Pa
+        /// Sample PartionKey
         /// </summary>
         public string PartitionKey { get; set; }
 
