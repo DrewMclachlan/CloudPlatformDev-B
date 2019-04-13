@@ -14,7 +14,7 @@ namespace CWPartB_Webjob
     public class Functions
     {
     
-        //Main Function for webjob
+        //Main Function for webjob 
         public static void ReadTable(
         //The first line sets a QueueTrigger to launch once a SampleEntity object is detected within the "mp3shortner" Queue
         //The serlized data sent from the code behind is then appened to a new SampleEntity object, blobinfo.
