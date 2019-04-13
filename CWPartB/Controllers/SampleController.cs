@@ -184,13 +184,19 @@ namespace CWPartB.Controllers
             //relevent as their is new data in the entry, thus must be deleted
             
 
-            //Finds blob location from exiting data in the table before update operation
-            var path = "shortenedmp3/" + updateEntity.SampleMp3Blob;
-            //creates a new blob object within the code by finding the blob using the path defined above
+            //Finds sample blob location from exiting data in the table before update operation
+            var path = updateEntity.SampleMp3Blob;
+            //creates a new  sample blob object within the code by finding the blob using the path defined above
            var blob = getMP3galleryContainer().GetBlockBlobReference(path);
             //deletes the blob from storage if it exists
             blob.DeleteIfExists();
-        
+
+            //Same operation as above but for the inputblob
+            var path2 = updateEntity.Mp3Blob;
+            var blob2 = getMP3galleryContainer().GetBlockBlobReference(path2);
+            blob2.DeleteIfExists();
+
+
 
             //sets the new values to update the table from the values sent in the PUT request body
             updateEntity.Title = sample.Title;
@@ -229,11 +235,18 @@ namespace CWPartB.Controllers
             SampleEntity updateEntity = (SampleEntity)retrievedResult.Result;
 
             //Finds blob location from exiting data in the table before delete operation
-            var path = "shortenedmp3/" + updateEntity.SampleMp3Blob;
+            var path = updateEntity.SampleMp3Blob;
+           
             //creates a new blob object within the code by finding the blob using the path defined above
             var blob = getMP3galleryContainer().GetBlockBlobReference(path);
             //if the blob exists in storage, deletes it
             blob.DeleteIfExists();
+
+            //Same operation as above but for the inputblob
+            var path2 = updateEntity.Mp3Blob;
+            var blob2 = getMP3galleryContainer().GetBlockBlobReference(path2);
+            blob2.DeleteIfExists();
+
 
             if (retrievedResult.Result == null) return NotFound();
             else
