@@ -15,25 +15,29 @@ namespace CWPartB.Controllers
 {
     //Drew Mclachlan 
     //S1511481  
-    public class ProductsController : ApiController
+    public class SampleController : ApiController
     {   
         
+        //Hard coded table partition name
         private const String partitionName = "Sample_Partition_1";
+        //New instance of the blob storage class which allows the code to store blobs in the connected storage acount
         private BlobStorageService _blobStorageService = new BlobStorageService();
         private CloudStorageAccount storageAccount;
         private CloudTableClient tableClient;
         private CloudTable table;
 
 
-
-        public ProductsController()
+        public SampleController()
         {
+            //Connects the cloud store account to the appliaction
             storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["AzureStorage"].ToString());
+            //Connects the table data to the storage account defined above
             tableClient = storageAccount.CreateCloudTableClient();
+            //retrives a table 'Samples' from the table data and appends it to the var table
             table = tableClient.GetTableReference("Samples");
         }
 
-
+        //Retrives the blobs in the MP3 gallery
         private CloudBlobContainer getMP3galleryContainer()
         {
 
@@ -41,17 +45,20 @@ namespace CWPartB.Controllers
         }
 
         /// <summary>
-        /// Get all products
+        /// Get all samples
         /// </summary>
         /// <returns></returns>
-        // GET: api/Products
+        // GET: api/Sample
+
+        //Return all table entries
         public IEnumerable<Sample> Get()
         {
-           
+          
+            //Finds all entries in the Table 'Samples'
             TableQuery<SampleEntity> query = new TableQuery<SampleEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionName));
             List<SampleEntity> entityList = new List<SampleEntity>(table.ExecuteQuery(query));
 
-            // Basically create a list of Product from the list of ProductEntity with a 1:1 object relationship, filtering data as needed
+            //Create a list of Products from the list of ProductEntity with a 1:1 object relationship, filtering data as needed
             IEnumerable<Sample> productList = from e in entityList
                                                select new Sample()
                                                {
@@ -68,12 +75,14 @@ namespace CWPartB.Controllers
             return productList;
         }
 
-        // GET: api/Products/5
+        // GET: api/Sample/5
         /// <summary>
-        /// Get a product
+        /// Get a sample
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        
+         //Gets specifc table entity defined by id 
         [ResponseType(typeof(Sample))]
         public IHttpActionResult GetProduct(string id)
         {
@@ -87,18 +96,18 @@ namespace CWPartB.Controllers
             if (getOperationResult.Result == null) return NotFound();
             else
             {
-                SampleEntity productEntity = (SampleEntity)getOperationResult.Result;
+                SampleEntity sampleEntity = (SampleEntity)getOperationResult.Result;
                 Sample p = new Sample()
                 {
-                    PartitionKey = productEntity.PartitionKey,
-                    SampleID = productEntity.RowKey,
-                    Title = productEntity.Title,
-                    Artist = productEntity.Artist,
-                    CreatedDate = productEntity.CreatedDate,
-                    Mp3Blob = productEntity.Mp3Blob,
-                    SampleMp3Blob = productEntity.SampleMp3Blob,
-                    SampleMp3URL = productEntity.SampleMp3URL,
-                    SampleDate = productEntity.SampleDate
+                    PartitionKey = sampleEntity.PartitionKey,
+                    SampleID = sampleEntity.RowKey,
+                    Title = sampleEntity.Title,
+                    Artist = sampleEntity.Artist,
+                    CreatedDate = sampleEntity.CreatedDate,
+                    Mp3Blob = sampleEntity.Mp3Blob,
+                    SampleMp3Blob = sampleEntity.SampleMp3Blob,
+                    SampleMp3URL = sampleEntity.SampleMp3URL,
+                    SampleDate = sampleEntity.SampleDate
 
                 };
          
@@ -106,19 +115,21 @@ namespace CWPartB.Controllers
             }
         }
 
-        // POST: api/Products
+        // POST: api/Sample
         /// <summary>
-        /// Create a new product
+        /// Create a new sample
         /// </summary>
-        /// <param name="product"></param>
+        /// <param name="sample"></param>
         /// <returns></returns>
+        
+            //Creats new sample in table with data passed through POST request body
         [ResponseType(typeof(Sample))]
         public IHttpActionResult PostProduct(Sample product)
         {
            
-        
+            //Creats a new sample
             DateTime date = DateTime.Now;
-            SampleEntity productEntity = new SampleEntity()
+            SampleEntity sampleEntity = new SampleEntity()
             {   
             RowKey = getNewMaxRowKeyValue(),
                 PartitionKey = partitionName,
@@ -133,26 +144,28 @@ namespace CWPartB.Controllers
             };
 
             // Create the TableOperation that inserts the product entity.
-            var insertOperation = TableOperation.Insert(productEntity);
+            var insertOperation = TableOperation.Insert(sampleEntity);
 
             // Execute the insert operation.
             table.Execute(insertOperation);
 
-            return CreatedAtRoute("DefaultApi", new { id = productEntity.RowKey }, productEntity);
+            return CreatedAtRoute("DefaultApi", new { id = sampleEntity.RowKey }, sampleEntity);
         }
 
-        // PUT: api/Products/5
+        // PUT: api/Sample/5
         /// <summary>
-        /// Update a product
+        /// Update a sample
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="product"></param>
+        /// <param name="sample"></param>
         /// <returns></returns>
-        //[SwaggerResponse(HttpStatusCode.NoContent)]
+    
+        //Updates table entry with new information defined in put reauest body
+        //Item to be updated is defined via id passed in url
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutProduct(string id, Sample product)
+        public IHttpActionResult PutSample(string id, Sample sample)
         {
-            if (id != product.SampleID)
+            if (id != sample.SampleID)
             {
                 return BadRequest();
             }
@@ -166,17 +179,22 @@ namespace CWPartB.Controllers
             // Assign the result to a ProductEntity object.
             SampleEntity updateEntity = (SampleEntity)retrievedResult.Result;
             
+            
+            //When updating an entry in the table if a blob is attached to that entry, it becomes no longer
+            //relevent as their is new data in the entry, thus must be deleted
+            
 
-           //  if(String.IsNullOrEmpty(updateEntity.SampleMp3Blob))
+            //Finds blob location from exiting data in the table before update operation
             var path = "shortenedmp3/" + updateEntity.SampleMp3Blob;
-            System.Diagnostics.Debug.WriteLine(path);
+            //creates a new blob object within the code by finding the blob using the path defined above
            var blob = getMP3galleryContainer().GetBlockBlobReference(path);
+            //deletes the blob from storage if it exists
             blob.DeleteIfExists();
         
 
-
-            updateEntity.Title = product.Title;
-            updateEntity.Artist = product.Artist;
+            //sets the new values to update the table from the values sent in the PUT request body
+            updateEntity.Title = sample.Title;
+            updateEntity.Artist = sample.Artist;
             updateEntity.Mp3Blob = null;
             updateEntity.SampleMp3Blob = null;
             updateEntity.SampleMp3URL = null;
@@ -184,25 +202,24 @@ namespace CWPartB.Controllers
 
 
             // Create the TableOperation that inserts the product entity.
-            // Note semantics of InsertOrReplace() which are consistent with PUT
-            // See: https://stackoverflow.com/questions/14685907/difference-between-insert-or-merge-entity-and-insert-or-replace-entity
             var updateOperation = TableOperation.InsertOrReplace(updateEntity);
 
-            // Execute the insert operation.
+            // Execute the update operation.
             table.Execute(updateOperation);
-  
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // DELETE: api/Products/5
+        // DELETE: api/Sample/5
         /// <summary>
-        /// Delete a product
+        /// Delete a sample
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+       
+            //If table entry is found from the id past in the url of the Delete request, deletes the entry
         [ResponseType(typeof(Sample))]
-        public IHttpActionResult DeleteProduct(string id)
+        public IHttpActionResult DeleteSample(string id)
         {
             // Create a retrieve operation that takes a product entity.
             TableOperation retrieveOperation = TableOperation.Retrieve<SampleEntity>(partitionName, id);
@@ -210,9 +227,12 @@ namespace CWPartB.Controllers
             // Execute the retrieve operation.
             TableResult retrievedResult = table.Execute(retrieveOperation);
             SampleEntity updateEntity = (SampleEntity)retrievedResult.Result;
+
+            //Finds blob location from exiting data in the table before delete operation
             var path = "shortenedmp3/" + updateEntity.SampleMp3Blob;
-            System.Diagnostics.Debug.WriteLine(path);
+            //creates a new blob object within the code by finding the blob using the path defined above
             var blob = getMP3galleryContainer().GetBlockBlobReference(path);
+            //if the blob exists in storage, deletes it
             blob.DeleteIfExists();
 
             if (retrievedResult.Result == null) return NotFound();
@@ -228,6 +248,12 @@ namespace CWPartB.Controllers
             }
         }
 
+
+        //Method that keeps track of the current Rowkey values in the table
+        //This method is called when a new entry is added to the Sample table 
+        //Finds the most recent rowkey value and provided a rowkey value to the new entry
+       //one greater than the last one. 
+       //e.g if samples had 6 entries, this method would provide a new sample entity the rowkey value 7
         private String getNewMaxRowKeyValue()
         {
             TableQuery<SampleEntity> query = new TableQuery<SampleEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionName));

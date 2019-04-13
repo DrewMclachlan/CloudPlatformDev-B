@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="AzureStorage-Web.config Connection String" description="AzureStorage Connection String used in web.config by the application to access the database." defaultValue="DefaultEndpointsProtocol=https;AccountName=dcmcpdcwb19;AccountKey=mYkIIl7vWeddu9XigDQBk62uKJyjCQstLH/lXLrmGMuDHyUz381GDD2vE+CzpU+IGk3XgtAuVwN52Rdde33dPg==;EndpointSuffix=core.windows.net" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\uni\\Documents\\GitHub\\CP-B\\CWPartB\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='AzureStorage']/@connectionString" />
+  </parameter>
+</parameters>

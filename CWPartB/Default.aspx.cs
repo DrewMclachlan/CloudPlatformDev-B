@@ -108,12 +108,15 @@ namespace CWPartB
                 }
         }
 
-        //Method called when fetching the Metadata for each shortenedMP3 outputblob when being displayed
+        //Called on each mp3shortned blob when being displayed
         public string getTitle(Uri blobURI)
         {
-          
+            //sets the blob variable
             CloudBlockBlob blob = new CloudBlockBlob(blobURI);
+            //retrieves the attrivutes
             blob.FetchAttributes();
+            //Returns the meta data attached to the blob, under the meta data heading Title
+            //the data returned is the filename of the file set by the user
             return blob.Metadata["Title"];
 
         }
@@ -121,11 +124,14 @@ namespace CWPartB
 
 
 
-
+        //Called before the page is rendered
         protected void Page_PreRender(object sender, EventArgs e)
         {
             try
             {
+                //Finds all blobs stored in the shortned mp3 container within  blob storage, These are the blobs processed by the webjob
+                //Then lists the blobs on the deafult.apx which the 20 second clip can be played
+                //This also sets the title of the blob, using the blob meta data, this is done by the getTitle method above
                 MP3DisplayControl.DataSource = from o in getMP3galleryContainer().GetDirectoryReference("shortenedmp3").ListBlobs()
                                                select new { Url = o.Uri, Title = getTitle(o.Uri) };
 

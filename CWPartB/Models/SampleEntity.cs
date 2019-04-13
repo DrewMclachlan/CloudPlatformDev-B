@@ -3,6 +3,9 @@ using System;
 
 namespace CWPartB.Models
 {
+    //Drew Mclachlan
+    //S1511481  
+
     public class SampleEntity : TableEntity
     {
         

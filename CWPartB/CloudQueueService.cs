@@ -5,6 +5,8 @@ using System.Diagnostics;
 
 namespace CWPartB
 {
+    //Drew Mclachlan
+    //S1511481
     public class CloudQueueService
     {
 
